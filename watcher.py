@@ -22,13 +22,13 @@ async def on_message_edit(before, after):
     if before.author == client.user:
         return
     
-    await before.channel.send(f'I see all in the universe. {before.author.display_name} originally said `{before.content}`, not `{after.content}`!')
+    await before.channel.send(f'I see all in the universe. `{before.author.display_name}` originally said `{before.content}`, not `{after.content}`!')
 
 @client.event
 async def on_message_delete(message):
     if message.author == client.user:
         return
     
-    await message.channel.send(f'I see all in the universe. {message.author.display_name} said `{message.content}`, before deleting!')
+    await message.channel.send(f'I see all in the universe. `{message.author.display_name}` said `{message.content}`, before deleting!')
 
 client.run(TOKEN)

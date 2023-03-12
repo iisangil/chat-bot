@@ -19,40 +19,13 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-messages = [
-    {
-        'role': 'system',
-        'content': 'Act as Stove Rojers, a discord chatbot.',
-    },
-    {
-        'role': 'user',
-        'content': 'Do you know where the capital of the USA is?'
-    },
-    {
-        'role': 'assistant',
-        'content': 'It is Washington, DC.'
-    },
-        {
-        'role': 'system',
-        'content': 'Respond only in first person.',
-    },
-        {
-        'role': 'system',
-        'content': 'Never break character.',
-    },
-]
+messages = []
 timeDict = {}
 
 @client.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord! 5')
+    print(f'{client.user} has connected to Discord')
 
-    response = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo',
-        messages=messages,
-        max_tokens=1024
-    )
-    print('response', response)
 
 @client.event
 async def on_message(message):
@@ -69,15 +42,16 @@ async def on_message(message):
         response = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
             messages=messages,
-            max_tokens=1024
+            max_tokens=2048
         )
         print('response', response)
+        messageResponse = {
+            'role': 'assistant',
+            'content': response.choices[0].message.content
+        }
+        messages.append(messageResponse)
+
         await message.channel.send(response.choices[0].message.content)
 
-        # time delay functionality below
-        # print(message.author.name, message.author.discriminator)
-        # key = message.author.name + message.author.discriminator
-        # if message.author.name + message.author.discriminator not in timeDict:
-        #     timeDict[]
 
 client.run(TOKEN)
